@@ -75,14 +75,14 @@
 
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textview_youtube_like"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="좋아요 n개"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textview_youtube_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="댓글"
