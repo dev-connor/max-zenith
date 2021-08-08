@@ -4,9 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
+import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -29,7 +32,16 @@ class GoogleSignInActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google_sign_in)
 
-        
+        val btnGoogleLogin = findViewById<SignInButton>(R.id.signinbutton_login_googlelogin)
+        btnGoogleLogin.setOnClickListener {
+            signIn()
+        }
+
+        val tvSignup = findViewById<TextView>(R.id.textview_login_signup)
+        tvSignup.setOnClickListener {
+            Toast.makeText(this, "준비 중입니다. 구글 로그인을 부탁드립니다.", Toast.LENGTH_SHORT).show()
+        }
+
 
         // [START config_signin]
         // Configure Google Sign In
@@ -105,6 +117,9 @@ class GoogleSignInActivity : Activity() {
     // [END signin]
 
     private fun updateUI(user: FirebaseUser?) {
+        if (user != null) {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
 
     }
 
