@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="200dp">
+
+
+        <TextView
+            android:id="@+id/textview_login_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Max&amp;Zenith"
+            android:textSize="40dp" />
+
+
+        <EditText
+            android:id="@+id/edittext_login_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:hint="이메일"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/password_login_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="비밀번호"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:id="@+id/textview_login_findpassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="right"
+            android:text="비밀번호를 잊으셨나요?"
+            android:textColor="@android:color/holo_blue_dark" />
+
+        <Button
+            android:id="@+id/button_login_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="로그인" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/signinbutton_login_googlelogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout">
+
+        <TextView
+            android:id="@+id/textview_login_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="계정이 없으신가요?" />
+
+        <TextView
+            android:id="@+id/textview_login_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="가입하기"
+            android:textColor="@android:color/holo_blue_dark"
+            android:layout_marginLeft="10dp"/>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
