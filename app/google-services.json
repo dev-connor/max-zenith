@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "149612368498",
+    "project_id": "max-zenith",
+    "storage_bucket": "max-zenith.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149612368498:android:181dc3d2b2215509a028eb",
+        "android_client_info": {
+          "package_name": "io.github.dev_connor.maxzenith"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "149612368498-k0cjqgej85mo0p9dn76q5cf6ohb5q10s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.github.dev_connor.maxzenith",
+            "certificate_hash": "1f43dc53eaf413ed628704d1676b3767f4281931"
+          }
+        },
+        {
+          "client_id": "149612368498-up8msplvi7hls6fto8gfhbq5cpo8m9ls.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsGKpGD4DHuBir8gZuVktyME45UHHVs10"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "149612368498-up8msplvi7hls6fto8gfhbq5cpo8m9ls.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
