@@ -24,7 +24,6 @@ import com.google.firebase.ktx.Firebase
  */
 class GoogleSignInActivity : Activity() {
 
-
     // [START declare_auth]
     private lateinit var auth: FirebaseAuth
     // [END declare_auth]
@@ -121,7 +120,7 @@ class GoogleSignInActivity : Activity() {
 
     private fun updateUI(user: FirebaseUser?) {
         user?.let {
-            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
             saveLoginInfo(user)
         }
     }
