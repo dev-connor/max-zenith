@@ -23,13 +23,24 @@
 
 
         <TextView
-            android:id="@+id/textview_youtube_user"
+            android:id="@+id/textview_youtube_channel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="사용자"
+            android:text="채널"
             android:textColor="@color/white"
             app:layout_constraintLeft_toRightOf="@id/imageview_youtube_icon"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textview_youtube_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@id/textview_youtube_channel"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/imageview_youtube_menu"
+            android:layout_marginLeft="30dp"
+            android:text="제목"
+            android:textColor="@color/white" />
 
         <ImageView
             android:id="@+id/imageview_youtube_menu"
@@ -86,6 +97,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="좋아요 n개"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/textview_youtube_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="내용"
         android:textColor="@color/white" />
 
     <TextView

@@ -5,14 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import io.github.dev_connor.maxzenith.data.YoutubeTest
-import io.github.dev_connor.maxzenith.databinding.ItemYoutubeBinding
+import io.github.dev_connor.maxzenith.data.Item
 import io.github.dev_connor.maxzenith.YoutubeAdapter.YoutubeItemViewHolder
+import io.github.dev_connor.maxzenith.databinding.ItemYoutubeBinding
 
-class YoutubeAdapter: ListAdapter<YoutubeTest, YoutubeItemViewHolder>(diffUtil) {
+class YoutubeAdapter: ListAdapter<Item, YoutubeItemViewHolder>(diffUtil) {
     inner class YoutubeItemViewHolder(private val binding: ItemYoutubeBinding) :RecyclerView.ViewHolder(binding.root) {
-        fun bind(youtube: YoutubeTest) {
-            binding.textviewYoutubeUser.text = youtube.user
+        fun bind(item: Item) {
+            binding.textviewYoutubeTitle.text = item.snippet.title
+            binding.textviewYoutubeDescription.text = item.snippet.description
+            binding.textviewYoutubeChannel.text = item.snippet.channelTitle
+            binding.textviewYoutubeComment.text = item.snippet.thumbnails.maxres.url
         }
 
     }
@@ -26,13 +29,13 @@ class YoutubeAdapter: ListAdapter<YoutubeTest, YoutubeItemViewHolder>(diffUtil) 
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<YoutubeTest>() {
-            override fun areItemsTheSame(oldItem: YoutubeTest, newItem: YoutubeTest): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<Item>() {
+            override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: YoutubeTest, newItem: YoutubeTest): Boolean {
-                return oldItem.user == newItem.user
+            override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
+                return oldItem.snippet.thumbnails.maxres.url == newItem.snippet.thumbnails.maxres.url
             }
 
         }

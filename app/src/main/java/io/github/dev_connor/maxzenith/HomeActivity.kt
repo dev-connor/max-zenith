@@ -15,9 +15,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import io.github.dev_connor.maxzenith.data.Snippet
 import io.github.dev_connor.maxzenith.data.Youtube
 import io.github.dev_connor.maxzenith.data.YoutubeService
-import io.github.dev_connor.maxzenith.data.YoutubeTest
 import io.github.dev_connor.maxzenith.databinding.ActivityHomeBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -49,19 +49,6 @@ class HomeActivity : AppCompatActivity() {
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        var list = mutableListOf(
-            YoutubeTest("사용자"),
-        )
-        adapter.submitList(list)
-
-        /* 리스트 추가 */
-        val editText = findViewById<EditText>(R.id.editText)
-        val button = findViewById<Button>(R.id.button)
-        button.setOnClickListener{
-            list.add(YoutubeTest(editText.text.toString()))
-            adapter.notifyDataSetChanged()
-        }
-
         /* 로그아웃 */
         val button_home_logOut = findViewById<Button>(R.id.button_home_logOut)
         button_home_logOut.setOnClickListener{
@@ -70,37 +57,47 @@ class HomeActivity : AppCompatActivity() {
             updateUI(auth.currentUser)
         }
 
+        /* findViewById */
         textView_home_email = findViewById(R.id.textView_home_email)
+        val editText_home_id = findViewById<EditText>(R.id.editText_home_id)
 
-        /* 레트로핏: API 라이브러리 */
+
         val retrofit = Retrofit.Builder()
             .baseUrl("https://www.googleapis.com")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val youtubeService = retrofit.create(YoutubeService::class.java)
-        youtubeService.getPlaylists("AIzaSyBpiYuuOnCz7aKgBZEaldurIH8wfix7i88")
-            .enqueue(object: Callback<Youtube> {
-                override fun onResponse(
-                    call: Call<Youtube>,
-                    response: Response<Youtube>
-                ) {
-                    // todo 성공처리
-                    if (response.isSuccessful.not()) {
-                        Log.e("TAG", "Not!! Success")
-                        return
-                    }
-                    response.body()?.let {
-                        Log.d("TAG", it.toString())
-                        it.items.forEach {
+        val button_home_addList = findViewById<Button>(R.id.button_home_addList)
+        button_home_addList.setOnClickListener{
+
+            /* 레트로핏: API 라이브러리 */
+            youtubeService.getPlaylists(editText_home_id.text.toString())
+                .enqueue(object: Callback<Youtube> {
+                    override fun onResponse(
+                        call: Call<Youtube>,
+                        response: Response<Youtube>
+                    ) {
+                        // todo 성공처리
+                        if (response.isSuccessful.not()) {
+                            Log.e("TAG", "Not!! Success")
+                            return
+                        }
+                        response.body()?.let { it ->
                             Log.d("TAG", it.toString())
+                            it.items.forEach {
+                                Log.d("TAG", it.toString())
+                            }
+                            Log.d("TAG", it.items[0].toString())
+                            adapter.submitList(it.items)
                         }
                     }
-                }
 
-                override fun onFailure(call: Call<Youtube>, t: Throwable) {
-                    // TODO("Not yet implemented")
-                }
-            })
+                    override fun onFailure(call: Call<Youtube>, t: Throwable) {
+                        // TODO("Not yet implemented")
+                    }
+                })
+            editText_home_id.setText("")
+        }
     }
 
     // [START on_start_check_user]
@@ -118,6 +115,4 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, GoogleSignInActivity::class.java))
         }
     }
-
-
 }

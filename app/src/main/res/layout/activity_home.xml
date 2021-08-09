@@ -40,16 +40,16 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/editText_home_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="홍길동" />
+                    android:hint="아이디 주소"
+                    android:inputType="textPersonName" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/button_home_addList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
