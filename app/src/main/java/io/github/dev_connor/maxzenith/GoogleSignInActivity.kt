@@ -120,11 +120,12 @@ class GoogleSignInActivity : Activity() {
 
     private fun updateUI(user: FirebaseUser?) {
         user?.let {
-            finish()
             saveLoginInfo(user)
+            finish()
         }
     }
 
+    /* 유저정보 데이터베이스에 저장 */
     private fun saveLoginInfo(user: FirebaseUser?) {
         user?.let {
             val database = Firebase.database.reference.child("Users").child(user.uid)
