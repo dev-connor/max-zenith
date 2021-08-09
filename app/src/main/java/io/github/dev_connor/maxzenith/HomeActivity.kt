@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -15,10 +14,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import io.github.dev_connor.maxzenith.data.Youtube
+import io.github.dev_connor.maxzenith.data.YoutubeService
+import io.github.dev_connor.maxzenith.data.YoutubeTest
 import io.github.dev_connor.maxzenith.databinding.ActivityHomeBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -45,7 +50,7 @@ class HomeActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         var list = mutableListOf(
-            Youtube("id1"),
+            YoutubeTest("사용자"),
         )
         adapter.submitList(list)
 
@@ -53,7 +58,7 @@ class HomeActivity : AppCompatActivity() {
         val editText = findViewById<EditText>(R.id.editText)
         val button = findViewById<Button>(R.id.button)
         button.setOnClickListener{
-            list.add(Youtube(editText.text.toString()))
+            list.add(YoutubeTest(editText.text.toString()))
             adapter.notifyDataSetChanged()
         }
 
@@ -66,6 +71,39 @@ class HomeActivity : AppCompatActivity() {
         }
 
         textView_home_email = findViewById(R.id.textView_home_email)
+
+        /* 레트로핏: API 라이브러리 */
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://www.googleapis.com")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val youtubeService = retrofit.create(YoutubeService::class.java)
+        youtubeService.getPlaylists("AIzaSyBpiYuuOnCz7aKgBZEaldurIH8wfix7i88")
+            .enqueue(object: Callback<Youtube> {
+                override fun onResponse(
+                    call: Call<Youtube>,
+                    response: Response<Youtube>
+                ) {
+                    // todo 성공처리
+                    if (response.isSuccessful.not()) {
+                        Log.e("TAG", "Not!! Success")
+                        return
+                    }
+                    response.body()?.let {
+                        Log.d("TAG", it.toString())
+                        it.items.forEach { item ->
+                            Log.d("TAG", item.toString())
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<Youtube>, t: Throwable) {
+                    // TODO("Not yet implemented")
+                }
+
+            })
+
+
     }
 
     // [START on_start_check_user]

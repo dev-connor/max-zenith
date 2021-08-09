@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import io.github.dev_connor.maxzenith.data.Youtube
+import io.github.dev_connor.maxzenith.data.YoutubeTest
 import io.github.dev_connor.maxzenith.databinding.ItemYoutubeBinding
 import io.github.dev_connor.maxzenith.YoutubeAdapter.YoutubeItemViewHolder
 
-class YoutubeAdapter: ListAdapter<Youtube, YoutubeItemViewHolder>(diffUtil) {
+class YoutubeAdapter: ListAdapter<YoutubeTest, YoutubeItemViewHolder>(diffUtil) {
     inner class YoutubeItemViewHolder(private val binding: ItemYoutubeBinding) :RecyclerView.ViewHolder(binding.root) {
-        fun bind(youtube: Youtube) {
+        fun bind(youtube: YoutubeTest) {
             binding.textviewYoutubeUser.text = youtube.user
         }
 
@@ -26,12 +26,12 @@ class YoutubeAdapter: ListAdapter<Youtube, YoutubeItemViewHolder>(diffUtil) {
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Youtube>() {
-            override fun areItemsTheSame(oldItem: Youtube, newItem: Youtube): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<YoutubeTest>() {
+            override fun areItemsTheSame(oldItem: YoutubeTest, newItem: YoutubeTest): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: Youtube, newItem: Youtube): Boolean {
+            override fun areContentsTheSame(oldItem: YoutubeTest, newItem: YoutubeTest): Boolean {
                 return oldItem.user == newItem.user
             }
 
