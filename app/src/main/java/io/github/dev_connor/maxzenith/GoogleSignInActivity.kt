@@ -15,12 +15,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.*
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
  */
 class GoogleSignInActivity : Activity() {
+
 
     // [START declare_auth]
     private lateinit var auth: FirebaseAuth
@@ -57,7 +60,6 @@ class GoogleSignInActivity : Activity() {
         // [START initialize_auth]
         // Initialize Firebase Auth
         auth = Firebase.auth
-
         // [END initialize_auth]
     }
 
@@ -103,6 +105,7 @@ class GoogleSignInActivity : Activity() {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
+                        Toast.makeText(this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show()
                         updateUI(null)
                     }
                 }
@@ -117,10 +120,21 @@ class GoogleSignInActivity : Activity() {
     // [END signin]
 
     private fun updateUI(user: FirebaseUser?) {
-        if (user != null) {
+        user?.let {
             startActivity(Intent(this, HomeActivity::class.java))
+            saveLoginInfo(user)
         }
+    }
 
+    private fun saveLoginInfo(user: FirebaseUser?) {
+        user?.let {
+            val database = Firebase.database.reference.child("Users").child(user.uid)
+            val userInfo = mutableMapOf<String, Any>()
+            userInfo["name"] = user.displayName.toString()
+            userInfo["email"] = user.email.toString()
+            userInfo["photoUrl"] = user.photoUrl.toString()
+            database.updateChildren(userInfo)
+        }
     }
 
     companion object {

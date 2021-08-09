@@ -2,9 +2,12 @@ package io.github.dev_connor.maxzenith
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import io.github.dev_connor.maxzenith.data.Youtube
 import io.github.dev_connor.maxzenith.databinding.ActivityHomeBinding
 
