@@ -91,8 +91,8 @@ class HomeActivity : AppCompatActivity() {
                     }
                     response.body()?.let {
                         Log.d("TAG", it.toString())
-                        it.items.forEach { item ->
-                            Log.d("TAG", item.toString())
+                        it.items.forEach {
+                            Log.d("TAG", it.toString())
                         }
                     }
                 }
@@ -100,10 +100,7 @@ class HomeActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<Youtube>, t: Throwable) {
                     // TODO("Not yet implemented")
                 }
-
             })
-
-
     }
 
     // [START on_start_check_user]
