@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -15,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import io.github.dev_connor.maxzenith.data.Snippet
 import io.github.dev_connor.maxzenith.data.Youtube
 import io.github.dev_connor.maxzenith.data.YoutubeService
 import io.github.dev_connor.maxzenith.databinding.ActivityHomeBinding
@@ -49,7 +49,11 @@ class HomeActivity : AppCompatActivity() {
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        /* 로그아웃 */
+        /* findViewById */
+        textView_home_email = findViewById(R.id.textView_home_email)
+        val editText_home_id = findViewById<EditText>(R.id.editText_home_id)
+
+        /* 로그아웃 버튼 */
         val button_home_logOut = findViewById<Button>(R.id.button_home_logOut)
         button_home_logOut.setOnClickListener{
             auth.signOut()
@@ -57,20 +61,22 @@ class HomeActivity : AppCompatActivity() {
             updateUI(auth.currentUser)
         }
 
-        /* findViewById */
-        textView_home_email = findViewById(R.id.textView_home_email)
-        val editText_home_id = findViewById<EditText>(R.id.editText_home_id)
+        /* 텍스트지우기 버튼 */
+        val imageView_home_delete = findViewById<ImageView>(R.id.imageView_home_delete)
+        imageView_home_delete.setOnClickListener{
+            editText_home_id.setText("")
+        }
 
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://www.googleapis.com")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val youtubeService = retrofit.create(YoutubeService::class.java)
+        /* 리사이클러뷰 추가 버튼 */
         val button_home_addList = findViewById<Button>(R.id.button_home_addList)
         button_home_addList.setOnClickListener{
 
             /* 레트로핏: API 라이브러리 */
+            val retrofit = Retrofit.Builder()
+                .baseUrl("https://www.googleapis.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            val youtubeService = retrofit.create(YoutubeService::class.java)
             youtubeService.getPlaylists(editText_home_id.text.toString())
                 .enqueue(object: Callback<Youtube> {
                     override fun onResponse(
