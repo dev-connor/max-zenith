@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -27,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var textView_home_email: TextView
+    private lateinit var textEmail: TextView
     private lateinit var auth: FirebaseAuth
     private lateinit var adapter: YoutubeAdapter
     private lateinit var binding: ActivityHomeBinding
@@ -50,26 +51,28 @@ class HomeActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         /* findViewById */
-        textView_home_email = findViewById(R.id.textView_home_email)
-        val editText_home_id = findViewById<EditText>(R.id.editText_home_id)
+        textEmail = findViewById(R.id.textView_home_email)
+        val editId = findViewById<EditText>(R.id.editText_home_id)
+        val textComment = findViewById<TextView>(R.id.textview_youtube_comment)
+        val imgVideo = findViewById<ImageView>(R.id.imageview_youtube_video)
 
         /* 로그아웃 버튼 */
-        val button_home_logOut = findViewById<Button>(R.id.button_home_logOut)
-        button_home_logOut.setOnClickListener{
+        val btnLogOut = findViewById<Button>(R.id.button_home_logOut)
+        btnLogOut.setOnClickListener{
             auth.signOut()
             googleSignInClient.signOut()
             updateUI(auth.currentUser)
         }
 
         /* 텍스트지우기 버튼 */
-        val imageView_home_delete = findViewById<ImageView>(R.id.imageView_home_delete)
-        imageView_home_delete.setOnClickListener{
-            editText_home_id.setText("")
+        val imgDelete = findViewById<ImageView>(R.id.imageView_home_delete)
+        imgDelete.setOnClickListener{
+            editId.setText("")
         }
 
         /* 리사이클러뷰 추가 버튼 */
-        val button_home_addList = findViewById<Button>(R.id.button_home_addList)
-        button_home_addList.setOnClickListener{
+        val btnAddList = findViewById<Button>(R.id.button_home_addList)
+        btnAddList.setOnClickListener{
 
             /* 레트로핏: API 라이브러리 */
             val retrofit = Retrofit.Builder()
@@ -77,7 +80,7 @@ class HomeActivity : AppCompatActivity() {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             val youtubeService = retrofit.create(YoutubeService::class.java)
-            youtubeService.getPlaylists(editText_home_id.text.toString())
+            youtubeService.getPlaylists(editId.text.toString())
                 .enqueue(object: Callback<Youtube> {
                     override fun onResponse(
                         call: Call<Youtube>,
@@ -102,7 +105,9 @@ class HomeActivity : AppCompatActivity() {
                         // TODO("Not yet implemented")
                     }
                 })
-            editText_home_id.setText("")
+            editId.setText("")
+
+a
         }
     }
 
@@ -111,7 +116,7 @@ class HomeActivity : AppCompatActivity() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         updateUI(auth.currentUser)
-        textView_home_email.setText("email: " + auth.currentUser?.email)
+        textEmail.setText("email: " + auth.currentUser?.email)
     }
     // [END on_start_check_user]
 

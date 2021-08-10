@@ -35,12 +35,12 @@
             android:id="@+id/textview_youtube_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toRightOf="@id/textview_youtube_channel"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/imageview_youtube_menu"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="20dp"
             android:text="제목"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toRightOf="@id/textview_youtube_channel"
+            app:layout_constraintRight_toLeftOf="@id/imageview_youtube_menu"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageview_youtube_menu"

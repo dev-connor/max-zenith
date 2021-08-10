@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import io.github.dev_connor.maxzenith.data.Item
 import io.github.dev_connor.maxzenith.YoutubeAdapter.YoutubeItemViewHolder
 import io.github.dev_connor.maxzenith.databinding.ItemYoutubeBinding
@@ -15,7 +16,11 @@ class YoutubeAdapter: ListAdapter<Item, YoutubeItemViewHolder>(diffUtil) {
             binding.textviewYoutubeTitle.text = item.snippet.title
             binding.textviewYoutubeDescription.text = item.snippet.description
             binding.textviewYoutubeChannel.text = item.snippet.channelTitle
-            binding.textviewYoutubeComment.text = item.snippet.thumbnails.maxres.url
+
+            /* 글라이드: 이미지 URL 라이브러리 */
+            Glide.with(binding.imageviewYoutubeVideo.context)
+                .load(item.snippet.thumbnails.maxres.url)
+                .into(binding.imageviewYoutubeVideo)
         }
 
     }
