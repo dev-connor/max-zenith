@@ -9,13 +9,13 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import io.github.dev_connor.maxzenith.data.Youtube
 import io.github.dev_connor.maxzenith.data.YoutubeService
@@ -70,17 +70,19 @@ class HomeActivity : AppCompatActivity() {
             editId.setText("")
         }
 
+        /* 레트로핏: API 라이브러리 */
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://www.googleapis.com")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val youtubeService = retrofit.create(YoutubeService::class.java)
+
         /* 리사이클러뷰 추가 버튼 */
         val btnAddList = findViewById<Button>(R.id.button_home_addList)
         btnAddList.setOnClickListener{
+            val channelId = editId.text.toString()
 
-            /* 레트로핏: API 라이브러리 */
-            val retrofit = Retrofit.Builder()
-                .baseUrl("https://www.googleapis.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-            val youtubeService = retrofit.create(YoutubeService::class.java)
-            youtubeService.getPlaylists(editId.text.toString())
+            youtubeService.getPlaylists(channelId)
                 .enqueue(object: Callback<Youtube> {
                     override fun onResponse(
                         call: Call<Youtube>,
@@ -91,12 +93,11 @@ class HomeActivity : AppCompatActivity() {
                             Log.e("TAG", "Not!! Success")
                             return
                         }
-                        response.body()?.let { it ->
-                            Log.d("TAG", it.toString())
+                        response.body()?.let {
                             it.items.forEach {
-                                Log.d("TAG", it.toString())
+                                val video = it.snippet
+                                saveVideoInfo(video.channelTitle, video.title, video.thumbnails.maxres.url)
                             }
-                            Log.d("TAG", it.items[0].toString())
                             adapter.submitList(it.items)
                         }
                     }
@@ -106,8 +107,6 @@ class HomeActivity : AppCompatActivity() {
                     }
                 })
             editId.setText("")
-
-a
         }
     }
 
@@ -124,6 +123,22 @@ a
     private fun updateUI(user: FirebaseUser?) {
         if (user == null) {
             startActivity(Intent(this, GoogleSignInActivity::class.java))
+        }
+    }
+
+    /* 비디오정보 데이터베이스에 저장 */
+    private fun saveVideoInfo(
+        channelTitle: String,
+        title: String,
+        url: String
+    ) {
+        val user = auth.currentUser
+        user?.let {
+            val database = Firebase.database.reference.child("Users").child(user.uid).child("Videos").child(title)
+            val videoMap = mutableMapOf<String, Any>()
+            videoMap["channelTitle"] = channelTitle
+            videoMap["url"] = url
+            database.updateChildren(videoMap)
         }
     }
 }

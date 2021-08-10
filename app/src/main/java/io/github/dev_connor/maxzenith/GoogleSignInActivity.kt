@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.*
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -129,11 +128,11 @@ class GoogleSignInActivity : Activity() {
     private fun saveLoginInfo(user: FirebaseUser?) {
         user?.let {
             val database = Firebase.database.reference.child("Users").child(user.uid)
-            val userInfo = mutableMapOf<String, Any>()
-            userInfo["name"] = user.displayName.toString()
-            userInfo["email"] = user.email.toString()
-            userInfo["photoUrl"] = user.photoUrl.toString()
-            database.updateChildren(userInfo)
+            val userMap = mutableMapOf<String, Any>()
+            userMap["name"] = user.displayName.toString()
+            userMap["email"] = user.email.toString()
+            userMap["photoUrl"] = user.photoUrl.toString()
+            database.updateChildren(userMap)
         }
     }
 
