@@ -11,17 +11,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingHorizontal="20dp"
-        android:layout_marginTop="200dp">
+        android:layout_marginTop="100dp">
 
-
-        <TextView
-            android:id="@+id/textview_login_logo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Max&amp;Zenith"
-            android:textSize="40dp" />
-
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:src="@mipmap/max_zenith_set" />
 
         <EditText
             android:id="@+id/edittext_login_id"

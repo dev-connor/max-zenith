@@ -89,7 +89,7 @@ class HomeActivity : AppCompatActivity() {
             try {
                 videoId = youtubeURL.substring(youtubeURL.indexOf("list=") + 5)
             } catch (e: Exception) {
-                Toast.makeText(this, "올바른 URL 이 아닙니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "URL 이 너무 짧습니다.", Toast.LENGTH_SHORT).show()
             }
             youtubeService.getPlaylists(videoId)
                 .enqueue(object : Callback<Youtube> {
