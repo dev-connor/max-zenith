@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,8 +8,10 @@
     tools:context=".HomeActivity">
 
     <RelativeLayout
+        android:id="@+id/topActionBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_alignParentTop="true"
         android:background="@color/black">
 
 
@@ -28,32 +30,34 @@
             android:layout_height="30dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            app:tint="@color/white"
-            android:src="@mipmap/like" />
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/like"
+            app:tint="@color/white" />
 
         <ImageView
             android:id="@+id/iamgeView_home_post"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@id/iamgeView_home_recent"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            app:tint="@color/white"
-            android:src="@mipmap/plus_circular_button" />
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/iamgeView_home_recent"
+            android:src="@mipmap/plus_circular_button"
+            app:tint="@color/white" />
 
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_home_youtube"
         android:layout_width="match_parent"
-        android:layout_height="400dp" />
+        android:layout_height="400dp"
+        android:layout_below="@id/topActionBar" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recyclerView_home_youtube">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,6 +67,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/textView_home_email"
                     android:layout_width="wrap_content"
@@ -72,9 +77,9 @@
                 <Button
                     android:id="@+id/button_home_logOut"
                     android:layout_width="wrap_content"
-                    android:ems="7"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:ems="7"
                     android:text="로그아웃" />
 
             </RelativeLayout>
@@ -112,5 +117,43 @@
 
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@mipmap/home" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@mipmap/loupe" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@mipmap/video" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@mipmap/shopping_bag" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+</RelativeLayout>
 
