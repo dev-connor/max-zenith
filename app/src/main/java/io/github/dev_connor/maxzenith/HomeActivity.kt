@@ -15,8 +15,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import io.github.dev_connor.maxzenith.data.Video
 import io.github.dev_connor.maxzenith.data.Youtube
 import io.github.dev_connor.maxzenith.data.YoutubeService
 import io.github.dev_connor.maxzenith.databinding.ActivityHomeBinding
@@ -27,11 +31,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class HomeActivity : AppCompatActivity() {
+    private var n = 0
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var textEmail: TextView
     private lateinit var auth: FirebaseAuth
     private lateinit var adapter: YoutubeAdapter
     private lateinit var binding: ActivityHomeBinding
+    private val videos = mutableListOf<Video>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,7 +104,6 @@ class HomeActivity : AppCompatActivity() {
                                 val video = it.snippet
                                 saveVideoInfo(video.channelTitle, video.title, video.thumbnails.maxres.url)
                             }
-                            adapter.submitList(it.items)
                         }
                     }
 
@@ -107,6 +112,56 @@ class HomeActivity : AppCompatActivity() {
                     }
                 })
             editId.setText("")
+        }
+
+        /* 데이터베이스 불러오기 */
+        val database = Firebase.database.reference.child("Videos")
+        database.addChildEventListener(object: ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                var title = snapshot.child("제목").value.toString()
+                var channelTitle = snapshot.child("채널이름").value.toString()
+                var url = snapshot.child("URL").value.toString()
+
+                videos.add(Video(title, channelTitle, url))
+                adapter.submitList(videos)
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                //TODO("Not yet implemented")
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                //TODO("Not yet implemented")
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                //TODO("Not yet implemented")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                //TODO("Not yet implemented")
+            }
+        })
+    }
+
+    /* 함수 */
+
+    /* 비디오정보 데이터베이스에 저장 */
+    private fun saveVideoInfo(
+        channelTitle: String,
+        title: String,
+        url: String
+    ) {
+        val user = auth.currentUser
+        user?.let {
+            val database = Firebase.database.reference.child("Videos").child(n.toString())
+            val videoMap = mutableMapOf<String, Any>()
+            videoMap["제목"] = title
+            videoMap["채널이름"] = channelTitle
+            videoMap["URL"] = url
+            database.updateChildren(videoMap)
+            n++
         }
     }
 
@@ -123,22 +178,6 @@ class HomeActivity : AppCompatActivity() {
     private fun updateUI(user: FirebaseUser?) {
         if (user == null) {
             startActivity(Intent(this, GoogleSignInActivity::class.java))
-        }
-    }
-
-    /* 비디오정보 데이터베이스에 저장 */
-    private fun saveVideoInfo(
-        channelTitle: String,
-        title: String,
-        url: String
-    ) {
-        val user = auth.currentUser
-        user?.let {
-            val database = Firebase.database.reference.child("Users").child(user.uid).child("Videos").child(title)
-            val videoMap = mutableMapOf<String, Any>()
-            videoMap["channelTitle"] = channelTitle
-            videoMap["url"] = url
-            database.updateChildren(videoMap)
         }
     }
 }

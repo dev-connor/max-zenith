@@ -8,18 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import io.github.dev_connor.maxzenith.data.Item
 import io.github.dev_connor.maxzenith.YoutubeAdapter.YoutubeItemViewHolder
+import io.github.dev_connor.maxzenith.data.Video
 import io.github.dev_connor.maxzenith.databinding.ItemYoutubeBinding
 
-class YoutubeAdapter: ListAdapter<Item, YoutubeItemViewHolder>(diffUtil) {
+class YoutubeAdapter: ListAdapter<Video, YoutubeItemViewHolder>(diffUtil) {
     inner class YoutubeItemViewHolder(private val binding: ItemYoutubeBinding) :RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Item) {
-            binding.textviewYoutubeTitle.text = item.snippet.title
-            binding.textviewYoutubeDescription.text = item.snippet.description
-            binding.textviewYoutubeChannel.text = item.snippet.channelTitle
+        fun bind(video: Video) {
+            binding.textviewYoutubeTitle.text = video.title
+            binding.textviewYoutubeChannel.text = video.channelTitle
 
             /* 글라이드: 이미지 URL 라이브러리 */
             Glide.with(binding.imageviewYoutubeVideo.context)
-                .load(item.snippet.thumbnails.maxres.url)
+                .load(video.url)
                 .into(binding.imageviewYoutubeVideo)
         }
 
@@ -34,16 +34,14 @@ class YoutubeAdapter: ListAdapter<Item, YoutubeItemViewHolder>(diffUtil) {
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Item>() {
-            override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<Video>() {
+            override fun areItemsTheSame(oldItem: Video, newItem: Video): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
-                return oldItem.snippet.thumbnails.maxres.url == newItem.snippet.thumbnails.maxres.url
+            override fun areContentsTheSame(oldVideo: Video, newVideo: Video): Boolean {
+                return oldVideo.url == newVideo.url
             }
-
         }
     }
-
 }
