@@ -1,7 +1,6 @@
 package io.github.dev_connor.maxzenith
 
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -85,14 +84,14 @@ class HomeActivity : AppCompatActivity() {
         /* 데이터베이스저장 버튼 */
         val btnAddList = findViewById<Button>(R.id.button_home_addList)
         btnAddList.setOnClickListener {
-            val textId = editId.text.toString()
-            var channelId = ""
+            val youtubeURL = editId.text.toString()
+            var videoId = ""
             try {
-                channelId = textId.substring(textId.indexOf("list=") + 5)
+                videoId = youtubeURL.substring(youtubeURL.indexOf("list=") + 5)
             } catch (e: Exception) {
                 Toast.makeText(this, "올바른 URL 이 아닙니다.", Toast.LENGTH_SHORT).show()
             }
-            youtubeService.getPlaylists(channelId)
+            youtubeService.getPlaylists(videoId)
                 .enqueue(object : Callback<Youtube> {
                     override fun onResponse(
                         call: Call<Youtube>,
@@ -106,9 +105,13 @@ class HomeActivity : AppCompatActivity() {
                         response.body()?.let {
                             it.items.forEach {
                                 val video = it.snippet
-                                saveVideoInfo(video.channelTitle,
-                                    video.title,
-                                    video.thumbnails.maxres.url)
+                                try {
+                                    saveVideoInfo(videoId, video.channelTitle,
+                                        video.title,
+                                        video.thumbnails.maxres.url)
+                                } catch (e: Exception) {
+                                    Log.e("Youtube API", "데이터를 가져오는데 실패했습니다.")
+                                }
                             }
                         }
                     }
@@ -126,9 +129,9 @@ class HomeActivity : AppCompatActivity() {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val title = snapshot.child("제목").value.toString()
                 val channelTitle = snapshot.child("채널이름").value.toString()
-                val url = snapshot.child("썸네일 URL").value.toString()
+                val thumbnailURL = snapshot.child("썸네일 URL").value.toString()
 
-                videos.add(Video(title, channelTitle, url))
+                videos.add(Video(title, channelTitle, thumbnailURL))
                 adapter.submitList(videos)
                 adapter.notifyDataSetChanged()
             }
@@ -155,13 +158,14 @@ class HomeActivity : AppCompatActivity() {
 
     /* 비디오정보 데이터베이스에 저장 */
     private fun saveVideoInfo(
+        videoId: String,
         channelTitle: String,
         title: String,
         url: String
     ) {
         val user = auth.currentUser
         user?.let {
-            val database = Firebase.database.reference.child("영상").child(title)
+            val database = Firebase.database.reference.child("영상").child(videoId)
             val videoMap = mutableMapOf<String, Any>()
             videoMap["제목"] = title
             videoMap["채널이름"] = channelTitle

@@ -10,7 +10,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_home_youtube"
         android:layout_width="match_parent"
-        android:layout_height="500dp" />
+        android:layout_height="400dp" />
 
     <ScrollView
         android:layout_width="match_parent"
