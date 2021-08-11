@@ -20,6 +20,10 @@ class YoutubeAdapter: ListAdapter<Video, YoutubeItemViewHolder>(diffUtil) {
         fun bind(video: Video) {
             binding.textviewYoutubeTitle.text = video.title
             binding.textviewYoutubeChannel.text = video.channelTitle
+            binding.textviewYoutubeLike.text = "좋아요 n개"
+            binding.textviewYoutubeDescription.text = "내용"
+            binding.textviewYoutubeComment.text = "댓글"
+
 
             /* 유튜브연결 버튼 */
             binding.imageviewYoutubeVideo.setOnClickListener {

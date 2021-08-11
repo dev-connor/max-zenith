@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -29,8 +30,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Exception
 
 class HomeActivity : AppCompatActivity() {
+    private lateinit var imgProfile: ImageView
     private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var textEmail: TextView
     private lateinit var auth: FirebaseAuth
     private lateinit var adapter: YoutubeAdapter
     private lateinit var binding: ActivityHomeBinding
@@ -54,12 +55,11 @@ class HomeActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         /* findViewById */
-        textEmail = findViewById(R.id.textView_home_email)
         val editId = findViewById<EditText>(R.id.editText_home_id)
         val textComment = findViewById<TextView>(R.id.textview_youtube_comment)
+        imgProfile = findViewById<ImageView>(R.id.imageView_home_profile)
 
         /* 버튼 */
-
         /* 로그아웃 버튼 */
         val btnLogOut = findViewById<Button>(R.id.button_home_logOut)
         btnLogOut.setOnClickListener {
@@ -72,6 +72,11 @@ class HomeActivity : AppCompatActivity() {
         val imgDelete = findViewById<ImageView>(R.id.imageView_home_delete)
         imgDelete.setOnClickListener {
             editId.setText("")
+        }
+
+        /* 사용자정보 탭 버튼 */
+        imgProfile.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
 
         /* 레트로핏: API 라이브러리 */
@@ -177,6 +182,8 @@ class HomeActivity : AppCompatActivity() {
     // [START on_start_check_user]
     override fun onStart() {
         super.onStart()
+        val photoUrl = auth.currentUser?.photoUrl
+
         // Check if user is signed in (non-null) and update UI accordingly.
         Firebase.database.reference.child("사용자").child(auth.currentUser?.uid.toString()).child("이메일").get().addOnSuccessListener { email ->
 
@@ -186,7 +193,9 @@ class HomeActivity : AppCompatActivity() {
                 googleSignInClient.signOut()
                 updateUI(auth.currentUser)
             } else {
-                textEmail.setText("email: " + auth.currentUser?.email)
+                Glide.with(this)
+                    .load(photoUrl)
+                    .into(imgProfile)
             }
         }
     }

@@ -68,26 +68,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/textView_home_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="email" />
-
-                <Button
-                    android:id="@+id/button_home_logOut"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:ems="7"
-                    android:text="로그아웃" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
                 <EditText
                     android:id="@+id/editText_home_id"
                     android:layout_width="wrap_content"
@@ -115,6 +95,22 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/button_home_logOut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:ems="7"
+                    android:text="로그아웃" />
+
+            </RelativeLayout>
+
+
+
         </LinearLayout>
     </ScrollView>
 
@@ -122,7 +118,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp">
 
         <ImageView
             android:layout_width="30dp"
@@ -149,10 +146,10 @@
             android:src="@mipmap/shopping_bag" />
 
         <ImageView
+            android:id="@+id/imageView_home_profile"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_weight="1" />
-
     </LinearLayout>
 
 </RelativeLayout>
