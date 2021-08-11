@@ -60,14 +60,6 @@ class HomeActivity : AppCompatActivity() {
         imgProfile = findViewById<ImageView>(R.id.imageView_home_profile)
 
         /* 버튼 */
-        /* 로그아웃 버튼 */
-        val btnLogOut = findViewById<Button>(R.id.button_home_logOut)
-        btnLogOut.setOnClickListener {
-            auth.signOut()
-            googleSignInClient.signOut()
-            updateUI(auth.currentUser)
-        }
-
         /* 텍스트지우기 버튼 */
         val imgDelete = findViewById<ImageView>(R.id.imageView_home_delete)
         imgDelete.setOnClickListener {

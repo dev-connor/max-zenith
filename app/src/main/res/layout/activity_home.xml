@@ -51,70 +51,44 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_home_youtube"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_below="@id/topActionBar" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/topActionBar"
+        android:layout_above="@id/postLayout_home"/>
 
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/postLayout_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/recyclerView_home_youtube">
+        android:layout_above="@id/navigationBar_home">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <EditText
+            android:id="@+id/editText_home_id"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:hint="아이디 주소"
+            android:inputType="textPersonName" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/imageView_home_delete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignRight="@id/editText_home_id"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/cancel" />
 
-                <EditText
-                    android:id="@+id/editText_home_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:ems="10"
-                    android:hint="아이디 주소"
-                    android:inputType="textPersonName" />
+        <Button
+            android:id="@+id/button_home_addList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:ems="7"
+            android:text="리스트 추가" />
 
-                <ImageButton
-                    android:id="@+id/imageView_home_delete"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignRight="@id/editText_home_id"
-                    android:layout_gravity="center_vertical"
-                    android:src="@mipmap/cancel" />
-
-                <Button
-                    android:id="@+id/button_home_addList"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:ems="7"
-                    android:text="리스트 추가" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/button_home_logOut"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:ems="7"
-                    android:text="로그아웃" />
-
-            </RelativeLayout>
-
-
-
-        </LinearLayout>
-    </ScrollView>
+    </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/navigationBar_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

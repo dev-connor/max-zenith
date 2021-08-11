@@ -3,6 +3,7 @@ package io.github.dev_connor.maxzenith
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -39,6 +40,15 @@ class ProfileActivity : AppCompatActivity() {
         /* 버튼 */
         /* 홈 탭 버튼 */
         imgHome.setOnClickListener {
+            finish()
+        }
+
+        /* 로그아웃 버튼 */
+        val btnLogout = findViewById<Button>(R.id.button_profile_logout)
+        btnLogout.setOnClickListener {
+            auth.signOut()
+            googleSignInClient.signOut()
+            updateUI(auth.currentUser)
             finish()
         }
 
