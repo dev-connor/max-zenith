@@ -1,6 +1,9 @@
 package io.github.dev_connor.maxzenith
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -56,8 +59,8 @@ class HomeActivity : AppCompatActivity() {
 
         /* findViewById */
         val editId = findViewById<EditText>(R.id.editText_home_id)
-        val textComment = findViewById<TextView>(R.id.textview_youtube_comment)
         imgProfile = findViewById<ImageView>(R.id.imageView_home_profile)
+        val imgPost = findViewById<ImageView>(R.id.iamgeView_home_post)
 
         /* 버튼 */
         /* 텍스트지우기 버튼 */
@@ -69,6 +72,16 @@ class HomeActivity : AppCompatActivity() {
         /* 사용자정보 탭 버튼 */
         imgProfile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
+        }
+
+        /* 클립보드 붙여넣기 버튼 */
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        imgPost.setOnClickListener {
+            if (!clipboard.hasPrimaryClip()) {
+                Toast.makeText(this, "복사한 URL 이 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+            val pasteData = clipboard.primaryClip?.getItemAt(0)?.text as String
+            editId.setText(pasteData)
         }
 
         /* 레트로핏: API 라이브러리 */
@@ -199,4 +212,5 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, GoogleSignInActivity::class.java))
         }
     }
+
 }
