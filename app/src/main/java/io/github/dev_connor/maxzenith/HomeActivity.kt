@@ -4,10 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -29,6 +26,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Exception
 
 class HomeActivity : AppCompatActivity() {
     private var n = 0
@@ -64,7 +62,7 @@ class HomeActivity : AppCompatActivity() {
 
         /* 로그아웃 버튼 */
         val btnLogOut = findViewById<Button>(R.id.button_home_logOut)
-        btnLogOut.setOnClickListener{
+        btnLogOut.setOnClickListener {
             auth.signOut()
             googleSignInClient.signOut()
             updateUI(auth.currentUser)
@@ -72,7 +70,7 @@ class HomeActivity : AppCompatActivity() {
 
         /* 텍스트지우기 버튼 */
         val imgDelete = findViewById<ImageView>(R.id.imageView_home_delete)
-        imgDelete.setOnClickListener{
+        imgDelete.setOnClickListener {
             editId.setText("")
         }
 
@@ -85,11 +83,16 @@ class HomeActivity : AppCompatActivity() {
 
         /* 리사이클러뷰 추가 버튼 */
         val btnAddList = findViewById<Button>(R.id.button_home_addList)
-        btnAddList.setOnClickListener{
-            val channelId = editId.text.toString()
-
+        btnAddList.setOnClickListener {
+            val textId = editId.text.toString()
+            var channelId = ""
+            try {
+                channelId = textId.substring(textId.indexOf("list=") + 5)
+            } catch (e: Exception) {
+                Toast.makeText(this, "올바른 URL 이 아닙니다.", Toast.LENGTH_SHORT).show()
+            }
             youtubeService.getPlaylists(channelId)
-                .enqueue(object: Callback<Youtube> {
+                .enqueue(object : Callback<Youtube> {
                     override fun onResponse(
                         call: Call<Youtube>,
                         response: Response<Youtube>
@@ -102,7 +105,9 @@ class HomeActivity : AppCompatActivity() {
                         response.body()?.let {
                             it.items.forEach {
                                 val video = it.snippet
-                                saveVideoInfo(video.channelTitle, video.title, video.thumbnails.maxres.url)
+                                saveVideoInfo(video.channelTitle,
+                                    video.title,
+                                    video.thumbnails.maxres.url)
                             }
                         }
                     }
@@ -112,15 +117,17 @@ class HomeActivity : AppCompatActivity() {
                     }
                 })
             editId.setText("")
+
+
         }
 
         /* 데이터베이스 불러오기 */
-        val database = Firebase.database.reference.child("Videos")
+        val database = Firebase.database.reference.child("영상")
         database.addChildEventListener(object: ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 var title = snapshot.child("제목").value.toString()
                 var channelTitle = snapshot.child("채널이름").value.toString()
-                var url = snapshot.child("URL").value.toString()
+                var url = snapshot.child("썸네일 URL").value.toString()
 
                 videos.add(Video(title, channelTitle, url))
                 adapter.submitList(videos)
@@ -155,11 +162,11 @@ class HomeActivity : AppCompatActivity() {
     ) {
         val user = auth.currentUser
         user?.let {
-            val database = Firebase.database.reference.child("Videos").child(n.toString())
+            val database = Firebase.database.reference.child("영상").child(n.toString())
             val videoMap = mutableMapOf<String, Any>()
             videoMap["제목"] = title
             videoMap["채널이름"] = channelTitle
-            videoMap["URL"] = url
+            videoMap["썸네일 URL"] = url
             database.updateChildren(videoMap)
             n++
         }
@@ -169,8 +176,17 @@ class HomeActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        updateUI(auth.currentUser)
-        textEmail.setText("email: " + auth.currentUser?.email)
+        Firebase.database.reference.child("사용자").child(auth.currentUser?.uid.toString()).child("이메일").get().addOnSuccessListener { email ->
+
+            /* 데이터베이스가 없으면 로그아웃 */
+            if (email.value == null) {
+                auth.signOut()
+                googleSignInClient.signOut()
+                updateUI(auth.currentUser)
+            } else {
+                textEmail.setText("email: " + auth.currentUser?.email)
+            }
+        }
     }
     // [END on_start_check_user]
 

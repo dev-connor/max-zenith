@@ -127,11 +127,11 @@ class GoogleSignInActivity : Activity() {
     /* 유저정보 데이터베이스에 저장 */
     private fun saveLoginInfo(user: FirebaseUser?) {
         user?.let {
-            val database = Firebase.database.reference.child("Users").child(user.uid)
+            val database = Firebase.database.reference.child("사용자").child(user.uid)
             val userMap = mutableMapOf<String, Any>()
-            userMap["name"] = user.displayName.toString()
-            userMap["email"] = user.email.toString()
-            userMap["photoUrl"] = user.photoUrl.toString()
+            userMap["이름"] = user.displayName.toString()
+            userMap["이메일"] = user.email.toString()
+            userMap["프로필 URL"] = user.photoUrl.toString()
             database.updateChildren(userMap)
         }
     }
