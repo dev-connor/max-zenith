@@ -1,6 +1,7 @@
 package io.github.dev_connor.maxzenith
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -29,7 +30,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Exception
 
 class HomeActivity : AppCompatActivity() {
-    private var n = 0
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var textEmail: TextView
     private lateinit var auth: FirebaseAuth
@@ -58,7 +58,8 @@ class HomeActivity : AppCompatActivity() {
         textEmail = findViewById(R.id.textView_home_email)
         val editId = findViewById<EditText>(R.id.editText_home_id)
         val textComment = findViewById<TextView>(R.id.textview_youtube_comment)
-        val imgVideo = findViewById<ImageView>(R.id.imageview_youtube_video)
+
+        /* 버튼 */
 
         /* 로그아웃 버튼 */
         val btnLogOut = findViewById<Button>(R.id.button_home_logOut)
@@ -81,7 +82,7 @@ class HomeActivity : AppCompatActivity() {
             .build()
         val youtubeService = retrofit.create(YoutubeService::class.java)
 
-        /* 리사이클러뷰 추가 버튼 */
+        /* 데이터베이스저장 버튼 */
         val btnAddList = findViewById<Button>(R.id.button_home_addList)
         btnAddList.setOnClickListener {
             val textId = editId.text.toString()
@@ -117,17 +118,15 @@ class HomeActivity : AppCompatActivity() {
                     }
                 })
             editId.setText("")
-
-
         }
 
         /* 데이터베이스 불러오기 */
         val database = Firebase.database.reference.child("영상")
         database.addChildEventListener(object: ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                var title = snapshot.child("제목").value.toString()
-                var channelTitle = snapshot.child("채널이름").value.toString()
-                var url = snapshot.child("썸네일 URL").value.toString()
+                val title = snapshot.child("제목").value.toString()
+                val channelTitle = snapshot.child("채널이름").value.toString()
+                val url = snapshot.child("썸네일 URL").value.toString()
 
                 videos.add(Video(title, channelTitle, url))
                 adapter.submitList(videos)
@@ -162,13 +161,12 @@ class HomeActivity : AppCompatActivity() {
     ) {
         val user = auth.currentUser
         user?.let {
-            val database = Firebase.database.reference.child("영상").child(n.toString())
+            val database = Firebase.database.reference.child("영상").child(title)
             val videoMap = mutableMapOf<String, Any>()
             videoMap["제목"] = title
             videoMap["채널이름"] = channelTitle
             videoMap["썸네일 URL"] = url
             database.updateChildren(videoMap)
-            n++
         }
     }
 
