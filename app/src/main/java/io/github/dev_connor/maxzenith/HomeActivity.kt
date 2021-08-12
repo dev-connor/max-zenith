@@ -49,6 +49,9 @@ class HomeActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
+
+
+
         /* 자동로그인 해제 */
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -95,40 +98,64 @@ class HomeActivity : AppCompatActivity() {
         btnAddList.setOnClickListener {
             val youtubeURL = editId.text.toString()
             var videoId = ""
-            try {
-                videoId = youtubeURL.substring(youtubeURL.indexOf("list=") + 5)
-            } catch (e: Exception) {
-                Toast.makeText(this, "URL 이 너무 짧습니다.", Toast.LENGTH_SHORT).show()
-            }
-            youtubeService.getPlaylists(videoId)
-                .enqueue(object : Callback<Youtube> {
-                    override fun onResponse(
-                        call: Call<Youtube>,
-                        response: Response<Youtube>
-                    ) {
-                        // todo 성공처리
-                        if (response.isSuccessful.not()) {
-                            Log.e("TAG", "Not!! Success")
-                            return
-                        }
-                        response.body()?.let {
-                            it.items.forEach {
-                                val video = it.snippet
-                                try {
-                                    saveVideoInfo(videoId, video.channelTitle,
-                                        video.title,
-                                        video.thumbnails.maxres.url, youtubeURL)
-                                } catch (e: Exception) {
-                                    Log.e("Youtube API", "데이터를 가져오는데 실패했습니다.")
+
+            /* URL 이 재생목록일 경우 */
+            if (youtubeURL.contains("list=")) {
+                try {
+                    videoId = youtubeURL.substring(youtubeURL.indexOf("list=") + 5)
+                } catch (e: Exception) {
+                    Toast.makeText(this, "URL 이 너무 짧습니다.", Toast.LENGTH_SHORT).show()
+                }
+                youtubeService.getPlaylists(videoId)
+                    .enqueue(object : Callback<Youtube> {
+                        override fun onResponse(
+                            call: Call<Youtube>,
+                            response: Response<Youtube>
+                        ) {
+                            if (response.isSuccessful.not()) {
+                                Log.e("TAG", "Not!! Success")
+                                return
+                            }
+                            response.body()?.let {
+                                it.items.forEach {
+                                    val video = it.snippet
+                                    try {
+                                        saveVideoInfo(videoId, video.channelTitle,
+                                            video.title,
+                                            video.thumbnails.maxres.url, youtubeURL)
+                                    } catch (e: Exception) {
+                                        Log.e("Youtube API", "리스트가 아니거나 데이터를 가져오는데 실패했습니다.")
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    override fun onFailure(call: Call<Youtube>, t: Throwable) {
-                        // TODO("Not yet implemented")
-                    }
-                })
+                        override fun onFailure(call: Call<Youtube>, t: Throwable) {
+                            Log.e("Youtube API", "유튜브 API 를 가져오는데 실패했습니다.")
+                        }
+                    })
+
+                /* URL 이 재생목록이 아닐 경우 */
+            } else {
+                Toast.makeText(this, "리스트가 아닙니다.", Toast.LENGTH_SHORT).show()
+                val test = youtubeURL
+                val startIndex = test.indexOf("v=")
+                if (test.contains('&')) {
+                    val endIndex = test.indexOf('&')
+                    videoId = test.substring(startIndex + 2, endIndex)
+                } else {
+                    videoId = test.substring(startIndex + 2)
+                }
+                val imageLink = "https://img.youtube.com/vi/" + videoId + "/maxresdefault.jpg"
+                try {
+                    saveVideoInfo(videoId, "채널명",
+                        "제목",
+                        imageLink, test)
+                } catch (e: Exception) {
+                    Log.e("Youtube API", "동영상이 아니거나 데이터를 가져오는데 실패했습니다.")
+                }
+
+            }
             editId.setText("")
         }
 
