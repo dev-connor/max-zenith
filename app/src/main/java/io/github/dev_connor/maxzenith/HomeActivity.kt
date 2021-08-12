@@ -83,6 +83,11 @@ class HomeActivity : AppCompatActivity() {
                 Toast.makeText(this, "복사한 URL 이 없습니다.", Toast.LENGTH_SHORT).show()
             }
             val pasteData = clipboard.primaryClip?.getItemAt(0)?.text as String
+            if (pasteData.contains("list=")) {
+                Toast.makeText(this, "재생목록 입니다.", Toast.LENGTH_SHORT).show()
+            } else if (pasteData.contains("v=")) {
+                Toast.makeText(this, "단일영상 입니다.", Toast.LENGTH_SHORT).show()
+            } else {}
             editId.setText(pasteData)
         }
 
@@ -136,8 +141,7 @@ class HomeActivity : AppCompatActivity() {
                     })
 
                 /* URL 이 재생목록이 아닐 경우 */
-            } else {
-                Toast.makeText(this, "리스트가 아닙니다.", Toast.LENGTH_SHORT).show()
+            } else if (youtubeURL.contains("v=")){
                 val test = youtubeURL
                 val startIndex = test.indexOf("v=")
                 if (test.contains('&')) {
@@ -154,8 +158,7 @@ class HomeActivity : AppCompatActivity() {
                 } catch (e: Exception) {
                     Log.e("Youtube API", "동영상이 아니거나 데이터를 가져오는데 실패했습니다.")
                 }
-
-            }
+            } else {}
             editId.setText("")
         }
 

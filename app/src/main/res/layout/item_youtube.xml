@@ -57,7 +57,7 @@
     <ImageView
         android:id="@+id/imageview_youtube_video"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="250dp"
         app:srcCompat="@mipmap/ic_launcher" />
 
     <RelativeLayout
@@ -104,6 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="내용"
+        android:visibility="invisible"
         android:textColor="@color/white" />
 
     <TextView
@@ -111,5 +112,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="댓글"
+        android:visibility="invisible"
         android:textColor="@color/white" />
 </LinearLayout>
