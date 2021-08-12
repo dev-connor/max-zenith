@@ -36,7 +36,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/like"
+            android:src="@mipmap/under_construction"
             app:tint="@color/white" />
 
         <ImageView
@@ -104,22 +104,25 @@
             android:src="@mipmap/home" />
 
         <ImageView
+            android:id="@+id/imageView_profile_construction1"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_weight="1"
-            android:src="@mipmap/loupe" />
+            android:src="@mipmap/under_construction"
+            android:layout_weight="1" />
 
         <ImageView
+            android:id="@+id/imageView_profile_construction2"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_weight="1"
-            android:src="@mipmap/video" />
+            android:src="@mipmap/under_construction" />
 
         <ImageView
+            android:id="@+id/imageView_profile_construction3"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_weight="1"
-            android:src="@mipmap/shopping_bag" />
+            android:src="@mipmap/under_construction" />
 
         <ImageView
             android:id="@+id/imageView_profile_profileTab"

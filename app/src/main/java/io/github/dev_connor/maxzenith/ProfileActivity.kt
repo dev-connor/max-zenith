@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -50,6 +51,24 @@ class ProfileActivity : AppCompatActivity() {
             googleSignInClient.signOut()
             updateUI(auth.currentUser)
             finish()
+        }
+
+        /* 공사중 버튼 */
+        val imgConstruction1 = findViewById<ImageView>(R.id.imageView_profile_construction1)
+        val imgConstruction2 = findViewById<ImageView>(R.id.imageView_profile_construction2)
+        val imgConstruction3 = findViewById<ImageView>(R.id.imageView_profile_construction3)
+        val imgRecent = findViewById<ImageView>(R.id.iamgeView_profile_recent)
+        imgConstruction1.setOnClickListener {
+            Toast.makeText(this, "준비 중입니다.", Toast.LENGTH_SHORT).show()
+        }
+        imgConstruction2.setOnClickListener {
+            Toast.makeText(this, "준비 중입니다.", Toast.LENGTH_SHORT).show()
+        }
+        imgConstruction3.setOnClickListener {
+            Toast.makeText(this, "준비 중입니다.", Toast.LENGTH_SHORT).show()
+        }
+        imgRecent.setOnClickListener {
+            Toast.makeText(this, "준비 중입니다.", Toast.LENGTH_SHORT).show()
         }
 
         /* 자동로그인 해제 */

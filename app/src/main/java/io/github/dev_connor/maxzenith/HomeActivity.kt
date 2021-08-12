@@ -93,6 +93,25 @@ class HomeActivity : AppCompatActivity() {
             editId.setText(pasteData)
         }
 
+        /* 공사중 버튼 */
+        val imgConstruction1 = findViewById<ImageView>(R.id.imageView_home_construction1)
+        val imgConstruction2 = findViewById<ImageView>(R.id.imageView_home_construction2)
+        val imgConstruction3 = findViewById<ImageView>(R.id.imageView_home_construction3)
+        val recentConstruction = findViewById<ImageView>(R.id.iamgeView_home_recent)
+        imgConstruction1.setOnClickListener {
+            Toast.makeText(this, "준비 중입니다.", Toast.LENGTH_SHORT).show()
+        }
+        imgConstruction2.setOnClickListener {
+            Toast.makeText(this, "준비 중입니다.", Toast.LENGTH_SHORT).show()
+        }
+        imgConstruction3.setOnClickListener {
+            Toast.makeText(this, "준비 중입니다.", Toast.LENGTH_SHORT).show()
+        }
+        recentConstruction.setOnClickListener {
+            Toast.makeText(this, "준비 중입니다.", Toast.LENGTH_SHORT).show()
+        }
+
+
         /* 레트로핏: API 라이브러리 */
         val retrofit = Retrofit.Builder()
             .baseUrl("https://www.googleapis.com")
