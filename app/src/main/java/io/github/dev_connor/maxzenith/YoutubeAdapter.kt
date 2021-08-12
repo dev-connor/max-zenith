@@ -24,7 +24,7 @@ class YoutubeAdapter: ListAdapter<Video, YoutubeItemViewHolder>(diffUtil) {
             binding.textviewYoutubeChannel.text = video.channelTitle
             binding.textviewYoutubeLike.text = "좋아요 n개"
             binding.textviewYoutubeDescription.text = "내용"
-            binding.textviewYoutubeComment.text = video.url
+            binding.textviewYoutubeComment.text = "댓글"
 
             /* 글라이드: 이미지 URL 라이브러리 */
             Glide.with(binding.imageviewYoutubeVideo.context)
@@ -41,8 +41,9 @@ class YoutubeAdapter: ListAdapter<Video, YoutubeItemViewHolder>(diffUtil) {
         holder.bind(currentList[position])
 
         /* 유튜브연결 버튼 */
+        val imgVideo = holder.itemView.findViewById<ImageView>(R.id.imageview_youtube_video)
         val url = getItem(position).url
-        holder.itemView.setOnClickListener {
+        imgVideo.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(holder.itemView.context, intent, null)
         }
