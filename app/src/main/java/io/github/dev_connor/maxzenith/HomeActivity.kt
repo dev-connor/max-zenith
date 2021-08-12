@@ -61,16 +61,16 @@ class HomeActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         /* findViewById */
-        val editId = findViewById<EditText>(R.id.editText_home_id)
         imgProfile = findViewById<ImageView>(R.id.imageView_home_profile)
         val imgPost = findViewById<ImageView>(R.id.iamgeView_home_post)
+        val textURL = findViewById<TextView>(R.id.textView_home_url)
 
         /* 버튼 */
         /* 텍스트지우기 버튼 */
-        val imgDelete = findViewById<ImageView>(R.id.imageView_home_delete)
-        imgDelete.setOnClickListener {
-            editId.setText("")
-        }
+//        val imgDelete = findViewById<ImageView>(R.id.imageView_home_delete)
+//        imgDelete.setOnClickListener {
+//            editId.setText("")
+//        }
 
         /* 사용자정보 탭 버튼 */
         imgProfile.setOnClickListener {
@@ -105,12 +105,13 @@ class HomeActivity : AppCompatActivity() {
                     Log.e("haveURL", haveURL.toString() + "-> true")
                     haveURL = true
                 } else {
+                    Toast.makeText(this, "잘못된 URL 입니다.", Toast.LENGTH_SHORT).show()
                 }
-                editId.setText(pasteData)
+                textURL.setText(pasteData)
             } else {
 
                 /* 데이터베이스저장 버튼 */
-                val youtubeURL = editId.text.toString()
+                val youtubeURL = textURL.text.toString()
                 var videoId = ""
 
                 /* URL 이 재생목록일 경우 */
@@ -137,7 +138,7 @@ class HomeActivity : AppCompatActivity() {
                                             saveVideoInfo(videoId, video.channelTitle,
                                                 video.title,
                                                 video.thumbnails.maxres.url, youtubeURL)
-                                            editId.setText("")
+                                            textURL.setText("")
                                             haveURL = false
                                         } catch (e: Exception) {
                                             Log.e("Youtube API", "리스트가 아니거나 데이터를 가져오는데 실패했습니다.")
@@ -167,7 +168,7 @@ class HomeActivity : AppCompatActivity() {
                         saveVideoInfo(videoId, "채널명",
                             "제목",
                             imageLink, test)
-                        editId.setText("")
+                        textURL.setText("")
                         haveURL = false
                     } catch (e: Exception) {
                         Log.e("Youtube API", "동영상이 아니거나 데이터를 가져오는데 실패했습니다.")
@@ -181,12 +182,14 @@ class HomeActivity : AppCompatActivity() {
                         saveVideoInfo(videoId, "채널명",
                             "제목",
                             imageLink, test)
-                        editId.setText("")
+                        textURL.setText("")
                         haveURL = false
                     } catch (e: Exception) {
                         Log.e("Youtube API", "동영상이 아니거나 데이터를 가져오는데 실패했습니다.")
                     }
-                } else {}
+                } else {
+                    Toast.makeText(this, "잘못된 URL 로 유튜브에서 데이터를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
 
             }
         }
