@@ -3,7 +3,6 @@ package io.github.dev_connor.maxzenith
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -118,7 +117,7 @@ class HomeActivity : AppCompatActivity() {
                                 try {
                                     saveVideoInfo(videoId, video.channelTitle,
                                         video.title,
-                                        video.thumbnails.maxres.url)
+                                        video.thumbnails.maxres.url, youtubeURL)
                                 } catch (e: Exception) {
                                     Log.e("Youtube API", "데이터를 가져오는데 실패했습니다.")
                                 }
@@ -137,11 +136,12 @@ class HomeActivity : AppCompatActivity() {
         val database = Firebase.database.reference.child("영상")
         database.addChildEventListener(object: ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val title = snapshot.child("제목").value.toString()
-                val channelTitle = snapshot.child("채널이름").value.toString()
-                val thumbnailURL = snapshot.child("썸네일 URL").value.toString()
+                val title = snapshot.child("제목").value as String
+                val channelTitle = snapshot.child("채널이름").value as String
+                val thumbnailURL = snapshot.child("썸네일 URL").value as String
+                val url = snapshot.child("URL").value as String
 
-                videos.add(Video(title, channelTitle, thumbnailURL))
+                videos.add(Video(title, channelTitle, thumbnailURL, url))
                 adapter.submitList(videos)
                 adapter.notifyDataSetChanged()
             }
@@ -171,15 +171,17 @@ class HomeActivity : AppCompatActivity() {
         videoId: String,
         channelTitle: String,
         title: String,
+        thumbNailURL: String,
         url: String
-    ) {
+        ) {
         val user = auth.currentUser
         user?.let {
             val database = Firebase.database.reference.child("영상").child(videoId)
             val videoMap = mutableMapOf<String, Any>()
             videoMap["제목"] = title
             videoMap["채널이름"] = channelTitle
-            videoMap["썸네일 URL"] = url
+            videoMap["썸네일 URL"] = thumbNailURL
+            videoMap["URL"] = url
             database.updateChildren(videoMap)
         }
     }
