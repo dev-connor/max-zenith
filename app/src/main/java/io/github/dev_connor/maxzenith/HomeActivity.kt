@@ -87,6 +87,8 @@ class HomeActivity : AppCompatActivity() {
                 Toast.makeText(this, "재생목록 입니다.", Toast.LENGTH_SHORT).show()
             } else if (pasteData.contains("v=")) {
                 Toast.makeText(this, "단일영상 입니다.", Toast.LENGTH_SHORT).show()
+            } else if (pasteData.contains("youtu.be/")) {
+                Toast.makeText(this, "단일영상 입니다.", Toast.LENGTH_SHORT).show()
             } else {}
             editId.setText(pasteData)
         }
@@ -150,6 +152,18 @@ class HomeActivity : AppCompatActivity() {
                 } else {
                     videoId = test.substring(startIndex + 2)
                 }
+                val imageLink = "https://img.youtube.com/vi/" + videoId + "/maxresdefault.jpg"
+                try {
+                    saveVideoInfo(videoId, "채널명",
+                        "제목",
+                        imageLink, test)
+                } catch (e: Exception) {
+                    Log.e("Youtube API", "동영상이 아니거나 데이터를 가져오는데 실패했습니다.")
+                }
+            } else if (youtubeURL.contains("youtu.be/")){
+                val test = youtubeURL
+                val startIndex = test.indexOf("youtu.be/")
+                videoId = test.substring(startIndex + 9)
                 val imageLink = "https://img.youtube.com/vi/" + videoId + "/maxresdefault.jpg"
                 try {
                     saveVideoInfo(videoId, "채널명",
