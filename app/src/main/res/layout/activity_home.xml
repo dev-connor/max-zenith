@@ -72,13 +72,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp">
+        android:background="@color/black">
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_weight="1"
+            app:tint="@color/white"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
             android:src="@mipmap/home" />
 
         <ImageView
@@ -86,6 +88,9 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_weight="1"
+            app:tint="@color/white"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
             android:src="@mipmap/under_construction" />
 
         <ImageView
@@ -93,6 +98,9 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_weight="1"
+            app:tint="@color/white"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
             android:src="@mipmap/under_construction" />
 
         <ImageView
@@ -100,12 +108,17 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_weight="1"
+            app:tint="@color/white"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
             android:src="@mipmap/under_construction" />
 
         <ImageView
             android:id="@+id/imageView_home_profile"
             android:layout_width="30dp"
             android:layout_height="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
             android:layout_weight="1" />
     </LinearLayout>
 
